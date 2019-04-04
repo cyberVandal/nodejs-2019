@@ -45,3 +45,36 @@ var proverka = (a, string) =>{
 
 
 dodadi("V","Goran", proverka);
+
+
+
+var vetuvanje = (broj) =>{
+
+    return new Promise((resolve, reject) =>{
+        if(broj % 2 == 0 ){
+            return resolve(broj)
+
+
+        }else{
+            return reject(broj)
+        }
+
+
+
+    })
+
+
+}
+
+var b = 10;
+
+vetuvanje(b)
+    .then( 
+        resolve => {
+            console.log("Brojot "+b+" e paren")
+        },
+        reject => {
+            console.log("Brojot "+b+" ne e paren")
+        }
+        
+    )
