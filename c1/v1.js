@@ -115,13 +115,4 @@ var vetuvanje = () => {
     });
 }
 
-<<<<<<< HEAD
    
-=======
-vetuvanje()
-    .then(i => {
-        console.log("SUCCESS", i);
-    }, i => {
-        console.log("FAIL", i)
-});
->>>>>>> 870900620c2016680fbe35d6fb504ca8758eb868
