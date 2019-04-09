@@ -30,7 +30,13 @@ var add = (req, res) => {
 }
 
 var remove = (req, res) => {
-    res.send('OK');
+
+    var id = req.param('id');
+    if(data.students[id] != undefined){
+        return res.status(201).send(data.students.splice(id));
+    }
+    return res.status(404).send('Not Faund');
+    
 }
 
 var update = (req, res) => {
