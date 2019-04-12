@@ -66,15 +66,15 @@ var removeStudent = (id) => {
 
 
 }
-var updateStudent = (data) => {
+var updateStudent = (id, data) => {
 
     return new Promise((success, fail) => {
 
-        student.updateOne({_id: data._id }, { first_name: data.first_name, last_name: data.last_name, gpa: data.gpa  }, function(err, res) {
+        student.updateOne({_id: id }, data , err => {
             if(err){
                 return fail(err);
             }
-            return success(res);
+            return success();
 
 
 

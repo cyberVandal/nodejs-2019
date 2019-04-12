@@ -1,5 +1,8 @@
 var studentModel = require('../models/students');
 
+var validationSchema = require('../validators/student');
+var validator = require('node-input-validator'); 
+
 
 
 var getAll = (req, res) => {
@@ -34,7 +37,17 @@ var getOne = (req, res) => {
 
 var add = (req, res) => {
      //res.send('ok');
-     studentModel.addStudent(req.body)
+
+        var v = new validator(req.body, validationSchema.addStudent);
+        v.check()
+            .then(matched => {
+                if(matched){
+                    return studentModel.addStudent(req.body)
+                }else{
+                    throw new Error("Validation failed");
+                }
+            })
+
      .then(() => {
         return res.status(201).send('ok');
      })
@@ -65,27 +78,50 @@ var remove = (req, res) => {
 var update = (req, res) => {
     //res.send('ok');
     
-    var validate = req.body.first_name !=undefined
-        && req.body.last_name !=undefined
-        && req.body.gpa !=undefined
+    // var validate = req.body.first_name !=undefined
+    //     && req.body.last_name !=undefined
+    //     && req.body.gpa !=undefined
+        var v = new validator(req.body, validationSchema.addStudent);
+        v.check()
+            .then(matched => {
+                if(matched){
         
-        if(validate){
-        
-            studentModel.updateStudent(req.body)
+                    return studentModel.updateStudent(req.params.id, req.body)
+                }else{
+
+                    throw new Error("Validation failed");
+                }
+
+            })
+       
             .then(() => {
-                return res.status(200).send("Studentot e Azuriran Uspeshno."+res);
+                return res.status(200).send("Studentot e Azuriran Uspeshno.");
             })
             .catch(err =>{
                 console.log(err);
                 return res.status(500).send('internall server error');
             });
-    }else{
-        return res.status(400).send('bad request');
-    }
+   
 }
 
 var patch = (req, res) => {
-    res.send('ok');
+    // res.send('ok');
+    var validate1 = req.body.first_name !=undefined
+    || req.body.last_name !=undefined
+    || req.body.gpa !=undefined
+    if(validate1){
+        studentModel.updateStudent(req.params.id, req.body)
+        .then(() => {
+            return res.status(200).send("Studentot e Azuriran Uspeshno.");
+        })
+        .catch(err =>{
+            console.log(err);
+            return res.status(500).send('internall server error');
+        });
+    }else{
+        return res.status(400).send('bad request');
+    }
+  
 }
 
 module.exports = {
