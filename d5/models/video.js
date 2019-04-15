@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var video = new mongoose.model(
-    'video',
+    'videos',
     new mongoose.Schema({
         name: String,
         genre: String,

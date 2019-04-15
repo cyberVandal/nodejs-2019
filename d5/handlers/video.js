@@ -37,7 +37,7 @@ var getOne = (req, res) => {
 
 var add = (req, res) => {
      //res.send('ok');
-
+       // console.log(req.body);
         var v = new validator(req.body, validationSchema.addVideo);
         v.check()
             .then(matched => {
@@ -63,7 +63,7 @@ var remove = (req, res) => {
 
         videoModel.removeVideo(req.params.id)
             .then(() => {
-                return res.status(200).send("Studentot e izbrishan Uspeshno.");
+                return res.status(200).send("Filmot e izbrishan uspeshno");
             })
             .catch(err =>{
                 console.log(err);
