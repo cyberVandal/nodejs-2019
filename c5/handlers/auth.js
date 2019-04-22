@@ -2,6 +2,7 @@ var userModel = require('../models/auth');
 var userValidator = require('../validators/auth');
 var bcrypt = require('bcrypt-nodejs');
 var validator = require('node-input-validator');
+var jwt = require('jsonwebtoken');
 
 
 var register = (req, res) => {
@@ -44,14 +45,23 @@ var login = (req, res) => {
             if(matched){
                 return userModel.getUserByEmail(req.body.email);
             }
-            throw new Error("Validacija ne uspeshna");
+            throw new Error("Validacija ne e uspeshna");
 
         })
         .then(data => {
             if(data){
                 bcrypt.compare(req.body.password, data.password, function(err, r){
                     if(r){
-                        res.status(200).send("oK")
+                        // Send JWT ....
+                        var   token = jwt.sign(
+                            {
+                                uid: data._id,
+                                name: data.full_name,
+                                email: data.email
+                            },
+                            'perocarnajboljiusvet'
+                        );
+                        res.status(200).send(token);
                     }else{
                         res.status(400).send("Bad Request")
                     }
@@ -67,10 +77,16 @@ var login = (req, res) => {
             res.status(500).send('Internal Server Error');
         });
     //res.status(200).send('ok');
+
+   
     
+}
+var token = (req, res) => {
+    res.status(200).send(req.user);
 }
 
 module.exports ={
     register,
-    login
+    login,
+    token
 }
